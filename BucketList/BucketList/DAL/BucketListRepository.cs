@@ -8,13 +8,14 @@
     /// Repository used to query, insert and update bucket list entries
     /// from the underlying SQLite database
     /// </summary>
-    public class BucketListRepository
+    public class BucketListRepository : IDisposable
     {
-        private SQLiteConnection _db;
+        public const string DatabaseName = "BucketList.db";
+        private readonly SQLiteConnection _db;
 
         public BucketListRepository()
         {
-            this._db = new SQLiteConnection("BucketList.db");
+            this._db = new SQLiteConnection(DatabaseName, storeDateTimeAsTicks: true);
             this._db.CreateTable<BucketListEntry>();
 
             this._db.Insert(new BucketListEntry
@@ -25,9 +26,11 @@
             });
         }
 
-        public IEnumerable<BucketListEntry> Query
+        public IEnumerable<BucketListEntry> Query => this._db.Table<BucketListEntry>();
+
+        public void Dispose()
         {
-            get { return this._db.Table<BucketListEntry>(); }
+            this._db.Dispose();
         }
     }
 }

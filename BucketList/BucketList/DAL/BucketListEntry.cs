@@ -12,7 +12,7 @@
         [PrimaryKey, AutoIncrement]
         public int Id { get; set; }
 
-        [MaxLength(256)]
+        [NotNull, MaxLength(256)]
         public string Description { get; set; }
 
         public EntryDifficulty Difficulty { get; set; }
