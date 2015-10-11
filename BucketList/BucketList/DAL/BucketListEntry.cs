@@ -2,6 +2,7 @@
 {
     using SQLite;
     using System;
+    using System.ComponentModel;
 
     /// <summary>
     /// The entity representing a row from the SQLite database,
@@ -24,10 +25,19 @@
 
     public enum EntryDifficulty
     {
+        [Description("Very easy")]
         VeryEasy = 1,
+
+        [Description("Easy")]
         Easy = 2,
+
+        [Description("Moderate")]
         Moderate = 3,
+
+        [Description("Hard")]
         Hard = 4,
+
+        [Description("Very hard")]
         VeryHard = 5
     }
 }

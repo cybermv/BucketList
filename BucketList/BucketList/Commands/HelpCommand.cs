@@ -1,24 +1,78 @@
 ﻿namespace BucketList.Commands
 {
     using Core;
+    using System.Collections.Generic;
+    using System.Linq;
 
     public class HelpCommand : IConsoleCommand
     {
+        private static readonly Dictionary<string, string> CommandsHelp = new Dictionary<string, string>
+        {
+            {"add", @"Usages for 'add' command:
+    >> add
+        - prompts user for input
+    >> add ""my bucket list entry"" 3
+        - adds an entry immediately
+"},
+            {"get", @"Usages for 'get' command:
+    >> get / get unchecked
+        - gets all unchecked entries
+    >> get checked
+        - gets al the checked entries
+    >> get all
+        - gets all entries
+    >> get ""keyword""
+        - gets all entries whose Description contains given keyword
+    >> get 42
+        - gets the entry with the given Id
+"},
+            {"check", @"Usages for 'check' command:
+    >> check 42
+        -- checks the entry with the given Id" },
+            {"stats", @"Usages for the 'stats' command:
+    >> stats
+        -- display various statistics for checked and unchecked entries" }
+        };
+
         public string Name => "help";
 
         public ParameterCollection CheckParameters(string[] parameters)
         {
-            return new ParameterCollection();
+            ParameterCollection parameterCollection = new ParameterCollection();
+
+            switch (parameters.Length)
+            {
+                case 0:
+                    parameterCollection.Add("summary");
+                    return parameterCollection;
+
+                case 1:
+                    if (CommandsHelp.Keys.Contains(parameters[0].ToLowerInvariant()))
+                    {
+                        parameterCollection.Add("command");
+                        parameterCollection.Add(parameters[0].ToLowerInvariant());
+                        return parameterCollection;
+                    }
+                    break;
+            }
+
+            return null;
         }
 
         public ConsoleCommandResult Execute(ParameterCollection parameterCollection)
         {
-            ConsoleWriter.Write(
-                @"Mateo Velenik
-Ovo je primjer ispisa verbose stringa
- -- ee brate
- -- ma sve radi");
-            return ConsoleCommandResult.Success;
+            switch (parameterCollection[0])
+            {
+                case "summary":
+                    ConsoleWriter.WriteLine("printing help summary");
+                    return ConsoleCommandResult.Success;
+
+                case "command":
+                    string helpMessage = CommandsHelp[parameterCollection[1]];
+                    ConsoleWriter.WriteLine(helpMessage);
+                    return ConsoleCommandResult.Success;
+            }
+            return ConsoleCommandResult.Exception;
         }
     }
 }

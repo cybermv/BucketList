@@ -12,12 +12,10 @@
         private static readonly object[] EmptyParameters = new object[0];
 
         private const ConsoleColor DefaultForeColor = ConsoleColor.Gray;
-        private const ConsoleColor DefaultBackColor = ConsoleColor.Black;
 
         static ConsoleWriter()
         {
             Console.ForegroundColor = DefaultForeColor;
-            Console.BackgroundColor = DefaultBackColor;
         }
 
         public static void WriteLine(string message)

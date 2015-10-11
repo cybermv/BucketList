@@ -13,7 +13,8 @@
             new ExitCommand(),
             new HelpCommand(),
             new GetCommand(),
-            new AddCommand()
+            new AddCommand(),
+            new StatsCommand()
         };
 
         public static void Main(string[] args)
@@ -71,7 +72,7 @@
 
             foreach (IConsoleCommand command in Commands)
             {
-                if (command.Name.Equals(commandName, StringComparison.OrdinalIgnoreCase))
+                if (command.Name == commandName)
                 {
                     ParameterCollection parameterCollection = command.CheckParameters(parameters);
                     if (parameterCollection != null)

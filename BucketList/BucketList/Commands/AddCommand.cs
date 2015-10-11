@@ -21,7 +21,8 @@
                 case 2:
                     int difficultyInt;
                     if (parameters[0].StartsWith("\"") && parameters[0].EndsWith("\"") &&
-                        int.TryParse(parameters[1], out difficultyInt))
+                        int.TryParse(parameters[1], out difficultyInt) &&
+                        Enum.IsDefined(typeof(EntryDifficulty), difficultyInt))
                     {
                         parameterCollection.Add("immediate");
                         parameterCollection.Add(parameters[0].Substring(1, parameters[0].Length - 2));
@@ -39,16 +40,56 @@
             switch (parameterCollection[0])
             {
                 case "prompt":
-                    Console.WriteLine("prompting user to insert data for add");
-                    return ConsoleCommandResult.Success;
+                    return this.PromptInput();
 
                 case "immediate":
-                    Console.WriteLine("immediately adding item {0} - diff {1}",
-                        parameterCollection[1], (EntryDifficulty)Convert.ToInt32(parameterCollection[2]));
-                    return ConsoleCommandResult.Success;
+                    return this.CreateEntry(
+                        parameterCollection[1],
+                        (EntryDifficulty)Convert.ToInt32(parameterCollection[2]));
             }
 
             return ConsoleCommandResult.Exception;
+        }
+
+        private ConsoleCommandResult PromptInput()
+        {
+            ConsoleWriter.Write("Entry description: ");
+            string description = Console.ReadLine();
+
+            ConsoleWriter.Write("Difficulty (1-5): ");
+            string difficulty = Console.ReadLine();
+
+            int difficultyInt;
+            if (!string.IsNullOrWhiteSpace(description) &&
+                int.TryParse(difficulty, out difficultyInt) &&
+                Enum.IsDefined(typeof(EntryDifficulty), difficultyInt))
+            {
+                return this.CreateEntry(description, (EntryDifficulty)difficultyInt);
+            }
+            else
+            {
+                ConsoleWriter.WriteLine("Cannot add entry; see help for the command", ConsoleColor.Yellow);
+                return ConsoleCommandResult.BadInvoke;
+            }
+        }
+
+        private ConsoleCommandResult CreateEntry(string description, EntryDifficulty difficulty)
+        {
+            using (BucketListRepository repo = new BucketListRepository())
+            {
+                BucketListEntry entry = repo.Create(description, difficulty);
+
+                if (entry != null)
+                {
+                    ConsoleWriter.WriteLine("Added entry with Id {0}", ConsoleColor.Green, entry.Id);
+                    return ConsoleCommandResult.Success;
+                }
+                else
+                {
+                    ConsoleWriter.WriteLine("Error occurred while saving entry", ConsoleColor.Red);
+                    return ConsoleCommandResult.Exception;
+                }
+            }
         }
     }
 }

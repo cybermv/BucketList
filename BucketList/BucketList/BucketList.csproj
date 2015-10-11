@@ -58,6 +58,7 @@
     <Compile Include="Commands\ExitCommand.cs" />
     <Compile Include="Commands\GetCommand.cs" />
     <Compile Include="Commands\HelpCommand.cs" />
+    <Compile Include="Commands\StatsCommand.cs" />
     <Compile Include="Core\ConsoleCommandResult.cs" />
     <Compile Include="Core\ConsoleWriter.cs" />
     <Compile Include="Core\IConsoleCommand.cs" />
@@ -68,6 +69,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DAL\SQLite.cs" />
+    <Compile Include="Util\EntryDifficultyExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

@@ -2,9 +2,9 @@
 {
     using Core;
 
-    public class ExitCommand : IConsoleCommand
+    public class StatsCommand : IConsoleCommand
     {
-        public string Name => "exit";
+        public string Name => "stats";
 
         public ParameterCollection CheckParameters(string[] parameters)
         {
@@ -18,7 +18,8 @@
 
         public ConsoleCommandResult Execute(ParameterCollection parameterCollection)
         {
-            return ConsoleCommandResult.Terminate;
+            ConsoleWriter.WriteLine("printing all stats for bucket list entries");
+            return ConsoleCommandResult.Success;
         }
     }
 }

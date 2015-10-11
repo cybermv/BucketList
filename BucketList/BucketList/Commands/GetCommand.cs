@@ -1,11 +1,18 @@
 ﻿namespace BucketList.Commands
 {
     using Core;
+    using DAL;
     using System;
-    using System.Runtime.Remoting.Messaging;
+    using System.Collections.Generic;
+    using Util;
 
     public class GetCommand : IConsoleCommand
     {
+        private static readonly string TableTopBorder = "+" + new string('-', 98) + "+";
+
+        private static readonly string TableCaption = "|Id  |Description" + new string(' ', 47) + "|Difficulty|Created    |Checked    |";
+        private static readonly string TableEntryTemplate = "|{0,-4}|{1,-58}|{2,-10}|{3,-11}|{4,-11}|";
+
         public string Name => "get";
 
         public ParameterCollection CheckParameters(string[] parameters)
@@ -14,11 +21,13 @@
             switch (parameters.Length)
             {
                 case 0:
-                    parameterCollection.Add("all");
+                    parameterCollection.Add("unchecked");
                     return parameterCollection;
 
                 case 1:
                     if (parameters[0] == "all" ||
+                        parameters[0] == "unchecked" ||
+                        parameters[0] == "checked" ||
                         parameters[0] == "random")
                     {
                         parameterCollection.Add(parameters[0]);
@@ -47,10 +56,20 @@
 
         public ConsoleCommandResult Execute(ParameterCollection parameterCollection)
         {
+            BucketListRepository repo = new BucketListRepository();
+
             switch (parameterCollection[0])
             {
                 case "all":
                     Console.WriteLine("getting all entries");
+                    return PrintEntryList(repo.Query);
+
+                case "unchecked":
+                    Console.WriteLine("getting all unchecked entries");
+                    return ConsoleCommandResult.Success;
+
+                case "checked":
+                    Console.WriteLine("getting all checked");
                     return ConsoleCommandResult.Success;
 
                 case "random":
@@ -66,6 +85,26 @@
                     return ConsoleCommandResult.Success;
             }
             return ConsoleCommandResult.BadInvoke;
+        }
+
+        private ConsoleCommandResult PrintEntryList(IEnumerable<BucketListEntry> entries)
+        {
+            ConsoleWriter.WriteLine(TableTopBorder);
+            ConsoleWriter.WriteLine(TableCaption);
+
+            foreach (BucketListEntry entry in entries)
+            {
+                ConsoleWriter.WriteLine(TableEntryTemplate,
+                    entry.Id,
+                    entry.Description,
+                    entry.Difficulty.ToDisplayString(),
+                    entry.CreatedDate.ToString("d"),
+                    entry.CheckedDate?.ToString("d"));
+            }
+
+            ConsoleWriter.WriteLine(TableTopBorder);
+
+            return ConsoleCommandResult.Success;
         }
     }
 }
