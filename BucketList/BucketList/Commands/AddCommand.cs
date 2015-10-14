@@ -48,7 +48,7 @@
                         (EntryDifficulty)Convert.ToInt32(parameterCollection[2]));
             }
 
-            return ConsoleCommandResult.Exception;
+            return ConsoleCommandResult.BadInvoke;
         }
 
         private ConsoleCommandResult PromptInput()

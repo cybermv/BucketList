@@ -17,6 +17,7 @@
         {
             this._db = new SQLiteConnection(DatabaseName, storeDateTimeAsTicks: true);
             this._db.CreateTable<BucketListEntry>();
+            this._db.TimeExecution = true;
         }
 
         public IEnumerable<BucketListEntry> Query => this._db.Table<BucketListEntry>();
@@ -27,8 +28,7 @@
             {
                 CreatedDate = DateTime.Now,
                 Description = descripion,
-                Difficulty = difficulty,
-                CheckedDate = DateTime.Now
+                Difficulty = difficulty
             };
 
             int result = this._db.Insert(entry);
