@@ -56,9 +56,11 @@
   <ItemGroup>
     <Compile Include="Commands\AddCommand.cs" />
     <Compile Include="Commands\BackupCommand.cs" />
+    <Compile Include="Commands\CheckCommand.cs" />
     <Compile Include="Commands\ExitCommand.cs" />
     <Compile Include="Commands\GetCommand.cs" />
     <Compile Include="Commands\HelpCommand.cs" />
+    <Compile Include="Commands\PurgeCommand.cs" />
     <Compile Include="Commands\StatsCommand.cs" />
     <Compile Include="Core\ConsoleCommandResult.cs" />
     <Compile Include="Core\ConsoleWriter.cs" />

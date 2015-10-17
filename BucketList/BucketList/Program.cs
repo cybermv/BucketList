@@ -15,14 +15,14 @@
             new HelpCommand(),
             new GetCommand(),
             new AddCommand(),
+            new CheckCommand(),
             new StatsCommand(),
-            new BackupCommand()
+            new BackupCommand(),
+            new PurgeCommand()
         };
 
         public static void Main(string[] args)
         {
-            ConsoleWriter.WriteLine("BucketList - your own bucket list manager");
-
             while (true)
             {
                 ConsoleWriter.Write(">> ");
@@ -36,7 +36,7 @@
                         break;
 
                     case ConsoleCommandResult.NotFound:
-                        ConsoleWriter.WriteLine("Command not found", ConsoleColor.Yellow);
+                        //ConsoleWriter.WriteLine("Command not found", ConsoleColor.Yellow);
                         break;
 
                     case ConsoleCommandResult.BadInvoke:
@@ -48,7 +48,7 @@
                         break;
 
                     case ConsoleCommandResult.Terminate:
-                        ConsoleWriter.WriteLine("Command terminating application", ConsoleColor.DarkRed);
+                        //ConsoleWriter.WriteLine("Command terminating application", ConsoleColor.DarkRed);
                         return;
                 }
             }

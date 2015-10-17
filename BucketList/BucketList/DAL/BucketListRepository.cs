@@ -36,6 +36,20 @@
             return result > 0 ? entry : null;
         }
 
+        public bool Check(int entryId)
+        {
+            BucketListEntry foundEntry = this._db.Find<BucketListEntry>(entryId);
+
+            if (foundEntry == null || foundEntry.CheckedDate.HasValue)
+            {
+                return false;
+            }
+
+            foundEntry.CheckedDate = DateTime.Now;
+            int updated = this._db.Update(foundEntry);
+            return updated > 0;
+        }
+
         public void Dispose()
         {
             this._db.Dispose();

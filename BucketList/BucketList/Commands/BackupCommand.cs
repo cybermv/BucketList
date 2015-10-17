@@ -104,7 +104,7 @@
         {
             List<FileInfo> backupDatabases = this._backupDirectory
                 .GetFiles($"*{BackupFileExtension}")
-                .OrderBy(f => f.CreationTime)
+                .OrderByDescending(f => f.CreationTime)
                 .ToList();
 
             if (backupDatabases.Any())
@@ -112,7 +112,7 @@
                 ConsoleWriter.WriteLine("Available backups:");
                 foreach (FileInfo backupDatabase in backupDatabases)
                 {
-                    ConsoleWriter.WriteLine("{0}", backupDatabase.Name);
+                    ConsoleWriter.WriteLine(" {0}", backupDatabase.Name);
                 }
             }
             else
@@ -134,7 +134,8 @@
 
             if (File.Exists($@"{this._currentDirectory}\BucketList.db"))
             {
-                ConsoleWriter.WriteLine("Restoring this backup will erase the current database. Continue? (y/n)");
+                ConsoleWriter.WriteLine("Restoring this backup will erase the current database. Continue? (y/n)",
+                    ConsoleColor.Red);
                 ConsoleKeyInfo key = Console.ReadKey(true);
                 if (key.Key != ConsoleKey.Y)
                 {

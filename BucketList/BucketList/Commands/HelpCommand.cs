@@ -18,7 +18,7 @@
     >> get / get unchecked
         - gets all unchecked entries
     >> get checked
-        - gets al the checked entries
+        - gets all the checked entries
     >> get all
         - gets all entries
     >> get ""keyword""
@@ -28,10 +28,23 @@
 "},
             {"check", @"Usages for 'check' command:
     >> check 42
-        -- checks the entry with the given Id" },
+        -- checks the entry with the given Id"},
             {"stats", @"Usages for the 'stats' command:
     >> stats
-        -- display various statistics for checked and unchecked entries" }
+        -- display various statistics for checked and unchecked entries"},
+            {"backup", @"Usages for the 'backup' command:
+    >> backup
+        -- creates a backup of the current database
+    >> backup show
+        - lists all available backups, sorted from newest to oldest
+    >> backup restore 20151017-153522
+        - restores the given backup by replacing the current database"},
+            {"purge", @"Usages for 'purge' command:
+    >> purge
+        -- deletes the current database"},
+            {"exit", @"Usages for 'exit' command:
+    >> exit
+        -- closes the program"}
         };
 
         public string Name => "help";
@@ -64,7 +77,13 @@
             switch (parameterCollection[0])
             {
                 case "summary":
-                    ConsoleWriter.WriteLine("printing help summary");
+                    ConsoleWriter.WriteLine("BucketList is a console-based bucket list tracker.");
+                    ConsoleWriter.WriteLine("Manage your bucket list using these commands:");
+                    foreach (string commandName in CommandsHelp.Keys)
+                    {
+                        ConsoleWriter.WriteLine($"    >> {commandName}");
+                    }
+                    ConsoleWriter.WriteLine("Use 'help <commandName>' to learn more about the command.");
                     return ConsoleCommandResult.Success;
 
                 case "command":

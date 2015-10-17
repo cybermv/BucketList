@@ -11,7 +11,7 @@
         private static readonly object Locker = new object();
         private static readonly object[] EmptyParameters = new object[0];
 
-        private const ConsoleColor DefaultForeColor = ConsoleColor.Gray;
+        private const ConsoleColor DefaultForeColor = ConsoleColor.White;
 
         static ConsoleWriter()
         {
