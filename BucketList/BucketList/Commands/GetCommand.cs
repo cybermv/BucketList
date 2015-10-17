@@ -5,6 +5,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Runtime.InteropServices;
     using Util;
 
     public class GetCommand : IConsoleCommand
@@ -108,15 +109,13 @@
         {
             // TODO replace stupid algorithm
             List<BucketListEntry> list = new List<BucketListEntry>(RandomEntriesCount);
-            List<int> ids = new List<int>();
-
             List<BucketListEntry> entries = repo.Query.Where(e => !e.CheckedDate.HasValue).ToList();
-            entries.ForEach(e => ids.AddRange(Enumerable.Repeat(e.Id, (int)e.Difficulty)));
 
-            for (int i = 0; i < RandomEntriesCount; i++)
+            while (entries.Any() && list.Count < RandomEntriesCount)
             {
-                int id = ids[Rand.Next(0, ids.Count)];
-                list.Add(entries.Single(e => e.Id == id));
+                BucketListEntry entry = entries[Rand.Next(0, entries.Count)];
+                list.Add(entry);
+                entries.Remove(entry);
             }
 
             return list;
@@ -127,6 +126,7 @@
             if (!entries.Any())
             {
                 ConsoleWriter.WriteLine("No entries found", ConsoleColor.Yellow);
+                return;
             }
 
             ConsoleWriter.WriteLine(TableTopBorder);

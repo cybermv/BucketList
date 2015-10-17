@@ -4,6 +4,7 @@
     using Core;
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Linq;
 
     public class Program
@@ -14,7 +15,8 @@
             new HelpCommand(),
             new GetCommand(),
             new AddCommand(),
-            new StatsCommand()
+            new StatsCommand(),
+            new BackupCommand()
         };
 
         public static void Main(string[] args)
@@ -81,8 +83,9 @@
                         {
                             return command.Execute(parameterCollection);
                         }
-                        catch (Exception)
+                        catch (Exception ex)
                         {
+                            Trace.WriteLine(ex);
                             return ConsoleCommandResult.Exception;
                         }
                     }
