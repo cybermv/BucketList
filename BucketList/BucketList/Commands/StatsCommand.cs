@@ -1,6 +1,7 @@
 ﻿namespace BucketList.Commands
 {
     using Core;
+    using System;
 
     public class StatsCommand : IConsoleCommand
     {
@@ -18,7 +19,7 @@
 
         public ConsoleCommandResult Execute(ParameterCollection parameterCollection)
         {
-            ConsoleWriter.WriteLine("printing all stats for bucket list entries");
+            ConsoleWriter.WriteLine("TODO: add stats", ConsoleColor.Blue);
             return ConsoleCommandResult.Success;
         }
     }

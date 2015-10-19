@@ -66,29 +66,36 @@
                 switch (parameterCollection[0])
                 {
                     case "all":
-                        List<BucketListEntry> allEntries = repo.Query.ToList();
+                        List<BucketListEntry> allEntries = repo.Query
+                            .ToList();
                         PrintEntryList(allEntries);
                         break;
 
                     case "unchecked":
-                        List<BucketListEntry> uncheckedEntries = repo.Query.Where(e => !e.CheckedDate.HasValue).ToList();
+                        List<BucketListEntry> uncheckedEntries = repo.Query
+                            .Where(e => !e.CheckedDate.HasValue)
+                            .ToList();
                         PrintEntryList(uncheckedEntries);
                         break;
 
                     case "checked":
-                        List<BucketListEntry> checkedEntries = repo.Query.Where(e => e.CheckedDate.HasValue).ToList();
+                        List<BucketListEntry> checkedEntries = repo.Query
+                            .Where(e => e.CheckedDate.HasValue)
+                            .ToList();
                         PrintEntryList(checkedEntries);
                         break;
 
                     case "random":
-                        List<BucketListEntry> entries = GetRandomEntries(repo);
-                        PrintEntryList(entries);
+                        List<BucketListEntry> randomEntries = GetRandomEntries(repo);
+                        PrintEntryList(randomEntries);
                         break;
 
                     case "findbyid":
                         int entryId = Convert.ToInt32(parameterCollection[1]);
-                        BucketListEntry entry = repo.Query.SingleOrDefault(e => e.Id == entryId);
-                        PrintEntryList(new List<BucketListEntry> { entry });
+                        List<BucketListEntry> entryById = repo.Query
+                            .Where(e => e.Id == entryId)
+                            .ToList();
+                        PrintEntryList(entryById);
                         break;
 
                     case "findbydescription":
@@ -114,8 +121,12 @@
             while (entries.Any() && list.Count < RandomEntriesCount)
             {
                 BucketListEntry entry = entries[Rand.Next(0, entries.Count)];
-                list.Add(entry);
-                entries.Remove(entry);
+
+                if ((int)entry.Difficulty < Rand.Next(1, 8))
+                {
+                    list.Add(entry);
+                    entries.Remove(entry);
+                }
             }
 
             return list;
